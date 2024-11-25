@@ -1,28 +1,24 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: Continuous Integration
+
 on:
   pull_request:
     branches:
-      - main
+      - main  # Trigger on pull requests targeting the main branch
+
 jobs:
-  Explore-GitHub-Actions:
-    runs-on: ubuntu-latest
+  ci-job:
+    runs-on: ubuntu-latest  # Use the latest Ubuntu runner
+
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      # Step 1: Check out the repository code
       - name: Check out repository code
         uses: actions/checkout@v4
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+
+      # Step 2: Set up Python environment
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.13'  # Adjust the version to your needs
+          python-version: '3.11'  # Adjust the version to your needs
 
       # Step 3: Install dependencies
       - name: Install dependencies
@@ -30,15 +26,28 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # Step 4: Add src folder to PYTHONPATH
       - name: Set PYTHONPATH
         run: echo "PYTHONPATH=$(pwd)/src" >> $GITHUB_ENV
 
-      # Step 4: Run tests using pytest
+      # Step 5: Run tests using pytest
       - name: Run tests
         run: |
-          pytest --maxfail=1 --disable-warnings -q  # Run tests and stop after the first failure
+          pytest tests --maxfail=1 --disable-warnings -q  # Run tests and stop after the first failure
 
-      # Step 5: Run linting using flake8
+      # Step 6: Run linting using flake8
       - name: Run linting
         run: |
-          flake8 .  # Lint the codebase
+          flake8 .
+
+      # Optional: Display job status for debugging purposes
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+
+      # Step 7: (Optional) List files in the repository for debugging
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+
+      - run: echo "🍏 This job's status is ${{ job.status }}."
