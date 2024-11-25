@@ -23,13 +23,13 @@ jobs:
         run: |
           docker-compose up -d
           # Optionally, add a wait command here to ensure the container is fully up:
-          docker-compose exec flask_backend wait-for-it.sh localhost:5000 --timeout=30 -- echo "Flask app is up!" 
+          docker compose exec flask_backend wait-for-it.sh localhost:5000 --timeout=30 -- echo "Flask app is up!" 
 
       - name: Link with flake8
         run: |
-          docker-compose exec flask_backend flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-          docker-compose exec flask_backend flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+          docker compose exec flask_backend flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          docker compose exec flask_backend flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
       - name: Test with pytest
         run: |
-          docker-compose exec flask_backend python -m pytest --maxfail=1 --disable-warnings -q
+          docker compose exec flask_backend python -m pytest --maxfail=1 --disable-warnings -q
