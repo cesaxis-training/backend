@@ -1,11 +1,11 @@
 from flask import Flask
-from routes.hello_world  import example_blueprint
+from routes.db_access import db_test_blueprint  # Import the db_test blueprint from db_access.py in the routes folder
 
 def create_app():
     app = Flask(__name__)
 
-    # Register Blueprints
-    app.register_blueprint(example_blueprint)
+    # Register the db_test blueprint from db_access.py
+    app.register_blueprint(db_test_blueprint)
 
     return app
 
