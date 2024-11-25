@@ -6,4 +6,4 @@ def test_base():
 
 
 def test_run():
-    assert base.runme() == 1
+    assert src.runme() == 1
