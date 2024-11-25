@@ -6,4 +6,4 @@ def test_base():
 
 
 def test_run():
-    assert app.runme() == 1
+    assert app.create_app() == 1
