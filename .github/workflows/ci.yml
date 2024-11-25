@@ -22,13 +22,8 @@ jobs:
       - name: Build and run containers
         run: |
           docker compose up -d
+          
 
-      - name: Install dependencies
-        run: |
-          docker compose exec flask_backend python -m pip install --upgrade pip && pip install -r requirements.txt
-      - name: Install dependencies for testing
-        run: |
-            if [ -f requirements-test.txt ]; then pip install -r requirements-test.txt; fi
       - name: Lint with flake8
         run: |
             # stop the build if there are Python syntax errors or undefined names
