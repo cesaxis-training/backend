@@ -1,4 +1,4 @@
-from project_package import base
+from src import app
 
 
 def test_base():
