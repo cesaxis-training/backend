@@ -21,7 +21,7 @@ jobs:
 
       - name: Build and run containers
         run: |
-          docker compose up -d
+          docker compose build
 
       - name: Install dependencies
         run: |
