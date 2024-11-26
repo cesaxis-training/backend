@@ -59,7 +59,7 @@ jobs:
           MYSQL_DATABASE: cesaxis
           MYSQL_ROOT_PASSWORD: cesaxis
         run: |
-          ssh root@188.166.118.113 "cat > /srv/backend2/.env << EOL
+          ssh root@188.166.118.113 "cat > /srv/backend/.env << EOL
           GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
           GITHUB_SHA=${GITHUB_SHA}
           MYSQL_USER=${MYSQL_USER}
@@ -67,5 +67,9 @@ jobs:
           MYSQL_DATABASE=${MYSQL_DATABASE}
           MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
           EOL"
+
+      - name: Deploy docker-compose
+        run: |
+          ssh root@188.166.118.113 "cd /srv/backend && docker compose pull && docker compose up -d"
         
 
