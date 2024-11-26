@@ -2,7 +2,7 @@ from flask import Flask
 from src.routes.db_access import db_test_blueprint
 from flask_cors import CORS
 import os
-from models import models
+from src.models import models
 
 
 def create_app():
