@@ -4,11 +4,11 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    FLASK_ENV = os.getenv("FLASK_ENV", "development")
-    MYSQL_HOST = os.getenv("MYSQL_HOST", "localhost")
-    MYSQL_USER = os.getenv("MYSQL_USER", "root")
-    MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "")
-    MYSQL_DATABASE = os.getenv("MYSQL_DATABASE", "test")
+    FLASK_ENV = os.getenv("FLASK_ENV")
+    MYSQL_HOST = os.getenv("MYSQL_HOST")
+    MYSQL_USER = os.getenv("MYSQL_USER")
+    MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD")
+    MYSQL_DATABASE = os.getenv("MYSQL_DATABASE")
 
     @staticmethod
     def validate():
