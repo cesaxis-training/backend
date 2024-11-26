@@ -39,10 +39,15 @@ def get_all_quotes():
         # Obtém todas as citações do banco de dados
         quotes = models.Quotes.query.all()
         # Converte as citações para um formato de lista de dicionários
-        quotes_list = [{"id": q.id, "text": q.text, "author": q.author} for q in quotes]
+        quotes_list = [
+            {"id": q.id, "text": q.text, "author": q.author} for q in quotes
+        ]
         return jsonify(quotes_list), 200
     except Exception as e:
-        return jsonify({"message": "Erro ao listar citações", "error": str(e)}), 500
+        return (
+            jsonify({"message": "Erro ao listar citações", "error": str(e)}),
+            500,
+        )
 
 
 # Rota para criar uma nova citação (POST)
@@ -64,13 +69,20 @@ def create_quote():
         # Retorna a citação criada com status 201 (Criado)
         return (
             jsonify(
-                {"id": new_quote.id, "text": new_quote.text, "author": new_quote.author}
+                {
+                    "id": new_quote.id,
+                    "text": new_quote.text,
+                    "author": new_quote.author,
+                }
             ),
             201,
         )
     except Exception as e:
         models.db.session.rollback()
-        return jsonify({"message": "Erro ao criar citação", "error": str(e)}), 500
+        return (
+            jsonify({"message": "Erro ao criar citação", "error": str(e)}),
+            500,
+        )
 
 
 # Rota para atualizar uma citação existente (PUT)
@@ -93,12 +105,17 @@ def update_quote(id):
         # Commit das alterações no banco de dados
         models.db.session.commit()
         return (
-            jsonify({"id": quote.id, "text": quote.text, "author": quote.author}),
+            jsonify(
+                {"id": quote.id, "text": quote.text, "author": quote.author}
+            ),
             200,
         )
     except Exception as e:
         models.db.session.rollback()
-        return jsonify({"message": "Erro ao atualizar citação", "error": str(e)}), 500
+        return (
+            jsonify({"message": "Erro ao atualizar citação", "error": str(e)}),
+            500,
+        )
 
 
 # Rota para deletar uma citação (DELETE)
@@ -113,7 +130,13 @@ def delete_quote(id):
         # Deleta a citação do banco de dados
         models.db.session.delete(quote)
         models.db.session.commit()
-        return jsonify({"message": f"Citação com id {id} deletada com sucesso"}), 200
+        return (
+            jsonify({"message": f"Citação com id {id} deletada com sucesso"}),
+            200,
+        )
     except Exception as e:
         models.db.session.rollback()
-        return jsonify({"message": "Erro ao deletar citação", "error": str(e)}), 500
+        return (
+            jsonify({"message": "Erro ao deletar citação", "error": str(e)}),
+            500,
+        )

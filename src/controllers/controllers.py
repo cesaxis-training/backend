@@ -27,7 +27,11 @@ def create_quote():
         models.db.session.commit()
         return (
             jsonify(
-                {"id": new_quote.id, "text": new_quote.text, "author": new_quote.author}
+                {
+                    "id": new_quote.id,
+                    "text": new_quote.text,
+                    "author": new_quote.author,
+                }
             ),
             201,
         )
@@ -35,20 +39,28 @@ def create_quote():
         models.db.session.rollback()
         return (
             jsonify(
-                {"message": "Erro de integridade ao criar citação", "error": str(e)}
+                {
+                    "message": "Erro de integridade ao criar citação",
+                    "error": str(e),
+                }
             ),
             400,
         )
     except SQLAlchemyError as e:
         models.db.session.rollback()
-        return jsonify({"message": "Erro ao criar citação", "error": str(e)}), 500
+        return (
+            jsonify({"message": "Erro ao criar citação", "error": str(e)}),
+            500,
+        )
 
 
 # Rota para listar todas as citações (GET)
 @quote_bp.route("/quotes", methods=["GET"])
 def get_all_quotes():
     quotes = models.Quotes.query.all()
-    quotes_list = [{"id": q.id, "text": q.text, "author": q.author} for q in quotes]
+    quotes_list = [
+        {"id": q.id, "text": q.text, "author": q.author} for q in quotes
+    ]
     return jsonify(quotes_list)
 
 
@@ -57,7 +69,9 @@ def get_all_quotes():
 def get_quote(id):
     quote = models.Quotes.query.get(id)
     if quote:
-        return jsonify({"id": quote.id, "text": quote.text, "author": quote.author})
+        return jsonify(
+            {"id": quote.id, "text": quote.text, "author": quote.author}
+        )
     return jsonify({"message": "Citação não encontrada"}), 404
 
 
@@ -77,18 +91,26 @@ def update_quote(id):
 
     try:
         models.db.session.commit()
-        return jsonify({"id": quote.id, "text": quote.text, "author": quote.author})
+        return jsonify(
+            {"id": quote.id, "text": quote.text, "author": quote.author}
+        )
     except IntegrityError as e:
         models.db.session.rollback()
         return (
             jsonify(
-                {"message": "Erro de integridade ao atualizar citação", "error": str(e)}
+                {
+                    "message": "Erro de integridade ao atualizar citação",
+                    "error": str(e),
+                }
             ),
             400,
         )
     except SQLAlchemyError as e:
         models.db.session.rollback()
-        return jsonify({"message": "Erro ao atualizar citação", "error": str(e)}), 500
+        return (
+            jsonify({"message": "Erro ao atualizar citação", "error": str(e)}),
+            500,
+        )
 
 
 # Rota para deletar uma citação (DELETE)
@@ -101,7 +123,12 @@ def delete_quote(id):
     try:
         models.db.session.delete(quote)
         models.db.session.commit()
-        return jsonify({"message": f"Citação com id {id} deletada com sucesso"})
+        return jsonify(
+            {"message": f"Citação com id {id} deletada com sucesso"}
+        )
     except SQLAlchemyError as e:
         models.db.session.rollback()
-        return jsonify({"message": "Erro ao deletar citação", "error": str(e)}), 500
+        return (
+            jsonify({"message": "Erro ao deletar citação", "error": str(e)}),
+            500,
+        )
