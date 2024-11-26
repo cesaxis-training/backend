@@ -15,7 +15,7 @@ services:
     depends_on:
       - db
     networks:
-      - app_network
+      - cesaxis_network
 
   db:
     image: mysql:8.0
