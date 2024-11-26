@@ -1,6 +1,6 @@
 # Quotes API Backend
 
-A RESTful API service for managing quotes, built with Python/Flask, containerized with Docker and automated with CI/CD workflows.
+A RESTful API service for managing quotes, built with Python/Flask, containerized with Docker, and automated with CI/CD workflows.
 
 ## Overview
 
@@ -12,26 +12,6 @@ This backend service provides API endpoints to manage a collection of quotes, su
 - CRUD operations for quotes
 - Docker containerization
 - CI/CD pipelines with GitHub Actions
-
-## Project Structure
-
-```
-backend/
-├── src/
-│   ├── controllers/
-│   ├── models/
-│   ├── schemas/
-│   ├── routes/
-│   └── app.py
-├── .github/
-│   └── workflows/
-├── tests/
-├── Dockerfile
-├── docker-compose.yml
-├── requirements.txt
-├── .env.example
-└── README.md
-```
 
 ## API Endpoints
 
@@ -45,34 +25,35 @@ backend/
 
 ## Getting Started
 
-1. Clone the repository:
+1. **Clone the repository:**
+
+   ```bash
+   git clone git@github.com:cesaxis-training/backend.git
+   cd backend
+   ```
+
+2. **Setup environment variables:**
+
+   ```bash
+   cp .env.example .env
+   ```
+
+3. **Run with Docker:**
+
+   ```bash
+   docker-compose up --build
+   ```
+
+## Database Usage
+
+To interact with the database, use the following command:
 
 ```bash
-git clone git@github.com:cesaxis-training/backend.git
-cd backend
+docker compose exec db mysql -p
 ```
 
-2. Run with Docker:
+The schema is defined in the `models.py` file and automatically created when the container starts if it doesn't exist.
 
-```bash
-docker-compose up --build
-```
-## To use database
+## Disclaimer
 
-```bash
-docker compose exec db mysql -p 
-
-//password="password do root"
-
-```
-
-```sql
-    show database;
-
-    use mydatabase;
-
-    CREATE TABLE quotes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    text VARCHAR(500) NOT NULL,
-    author VARCHAR(100) NOT NULL
-);
+This project is for educational purposes and does not include any authentication or authorization mechanisms. It is intended to be used as a starting point for building a RESTful API service.
