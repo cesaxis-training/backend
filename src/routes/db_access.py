@@ -46,7 +46,7 @@ def get_all_quotes():
 
 
 # Rota para criar uma nova citação (POST)
-@db_test_blueprint.route("/quotes", methods=["POST"])
+@db_test_blueprint.route("/quotes/create", methods=["POST"])
 def create_quote():
     data = request.get_json()
 
@@ -74,7 +74,7 @@ def create_quote():
 
 
 # Rota para atualizar uma citação existente (PUT)
-@db_test_blueprint.route("/quotes/<int:id>", methods=["PUT"])
+@db_test_blueprint.route("/quotes/update/<int:id>", methods=["PUT"])
 def update_quote(id):
     data = request.get_json()
 
@@ -102,7 +102,7 @@ def update_quote(id):
 
 
 # Rota para deletar uma citação (DELETE)
-@db_test_blueprint.route("/quotes/<int:id>", methods=["DELETE"])
+@db_test_blueprint.route("/quotes/delete/<int:id>", methods=["DELETE"])
 def delete_quote(id):
     # Busca a citação no banco de dados com o ID fornecido
     quote = models.Quotes.query.get(id)
