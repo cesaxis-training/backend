@@ -38,3 +38,13 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY_PROD }}
+      - name: Add known hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H 188.166.118.113 >> ~/.ssh/known_hosts
+      - name: Create DIR
+        run: |
+          ssh root@188.166.118.113 "mkdir -p /srv/backend"
+      - name: Copy production docker compose
+        run: | 
+          scp docker-compose.prod.yml root@188.166.118.113:/srv/backend/docker-compose.yml
