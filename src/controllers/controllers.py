@@ -28,7 +28,9 @@ def create_quote():
 @quote_bp.route('/quotes', methods=['GET'])
 def get_all_quotes():
     quotes = Quotes.query.all()
-    quotes_list = [{'id': q.id, 'text': q.text, 'author': q.author} for q in quotes]
+    quotes_list = [
+        {'id': q.id, 'text': q.text, 'author': q.author} for q in quotes
+    ]
     return jsonify(quotes_list)
 
 
