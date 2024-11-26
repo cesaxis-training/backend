@@ -41,15 +41,15 @@ jobs:
       - name: Add known hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -H 188.166.118.113 >> ~/.ssh/known_hosts
+          ssh-keyscan -H 167.99.222.241 >> ~/.ssh/known_hosts
       - name: Check out
         uses: actions/checkout@v4
       - name: Create DIR
         run: |
-          ssh root@188.166.118.113 "mkdir -p /srv/backend"
+          ssh root@167.99.222.241 "mkdir -p /srv/backend"
       - name: Copy production docker compose
         run: | 
-          scp docker-compose.prod.yml root@188.166.118.113:/srv/backend/docker-compose.yml
+          scp docker-compose.prod.yml root@167.99.222.241:/srv/backend/docker-compose.yml
       - name: Create .env file
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
@@ -59,7 +59,7 @@ jobs:
           MYSQL_DATABASE: cesaxis
           MYSQL_ROOT_PASSWORD: cesaxis
         run: |
-          ssh root@188.166.118.113 "cat > /srv/backend/.env << EOL
+          ssh root@167.99.222.241 "cat > /srv/backend/.env << EOL
           GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
           GITHUB_SHA=${GITHUB_SHA}
           MYSQL_USER=${MYSQL_USER}
@@ -70,6 +70,6 @@ jobs:
 
       - name: Deploy docker-compose
         run: |
-          ssh root@188.166.118.113 "cd /srv/backend && docker compose pull && docker compose up -d"
+          ssh root@167.99.222.241 "cd /srv/backend && docker compose pull && docker compose up -d" 
         
 
