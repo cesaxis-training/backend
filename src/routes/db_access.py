@@ -5,10 +5,12 @@ import os
 # Create the Blueprint object
 db_test_blueprint = Blueprint('db_test', __name__)
 
+
 # Define the routes inside the blueprint
 @db_test_blueprint.route('/hello-world', methods=['GET'])
 def hello_world():
     return "Hello, World!", 200
+
 
 @db_test_blueprint.route('/db-test', methods=['GET'])
 def db_test():

@@ -2,6 +2,7 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
+
 class Quote(db.Model):
     __tablename__ = 'quotes'
 
@@ -11,4 +12,3 @@ class Quote(db.Model):
 
     def __repr__(self):
         return f"<Quote {self.id}: {self.text} - {self.author}>"
-    
