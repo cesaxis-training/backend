@@ -4,6 +4,7 @@ from models import db, Quotes
 # Criar um Blueprint para o controller de Citações
 quote_bp = Blueprint('quote_bp', __name__)
 
+
 # Rota para criar uma nova citação (POST)
 @quote_bp.route('/quotes', methods=['POST'])
 def create_quote():
@@ -18,10 +19,17 @@ def create_quote():
     try:
         db.session.add(new_quote)
         db.session.commit()
-        return jsonify({'id': new_quote.id, 'text': new_quote.text, 'author': new_quote.author}), 201
+        return jsonify({
+            'id': new_quote.id,
+            'text': new_quote.text,
+            'author': new_quote.author
+        }), 201
+
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'Erro ao criar citação', 'error': str(e)}), 500
+        return jsonify(
+            {'message': 'Erro ao criar citação', 'error': str(e)}
+        ), 500
 
 
 # Rota para listar todas as citações (GET)
@@ -39,7 +47,11 @@ def get_all_quotes():
 def get_quote(id):
     quote = Quotes.query.get(id)
     if quote:
-        return jsonify({'id': quote.id, 'text': quote.text, 'author': quote.author})
+        return jsonify({
+            'id': quote.id,
+            'text': quote.text,
+            'author': quote.author
+        })
     return jsonify({'message': 'Citação não encontrada'}), 404
 
 
@@ -59,10 +71,17 @@ def update_quote(id):
 
     try:
         db.session.commit()
-        return jsonify({'id': quote.id, 'text': quote.text, 'author': quote.author})
+        return jsonify({
+            'id': quote.id,
+            'text': quote.text,
+            'author': quote.author
+        })
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'Erro ao atualizar citação', 'error': str(e)}), 500
+        return jsonify({
+            'message': 'Erro ao atualizar citação',
+            'error': str(e)
+        }), 500
 
 
 # Rota para deletar uma citação (DELETE)
@@ -75,7 +94,12 @@ def delete_quote(id):
     try:
         db.session.delete(quote)
         db.session.commit()
-        return jsonify({'message': f'Citação com id {id} deletada com sucesso'})
+        return jsonify({
+            'message': f'Citação com id {id} deletada com sucesso'
+        })
     except Exception as e:
         db.session.rollback()
-        return jsonify({'message': 'Erro ao deletar citação', 'error': str(e)}), 500
+        return jsonify({
+            'message': 'Erro ao deletar citação',
+            'error': str(e)
+        }), 500
