@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  backend:
+    image: ghcr.io/${GITHUB_REPOSITORY}:${GITHUB_SHA}
+    container_name: flask_backend
+    ports:
+      - "5001:5000"  
+    environment:
+      - FLASK_ENV=production
+      - MYSQL_HOST=db
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    depends_on:
+      - db
+    networks:
+      - app_network
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    volumes:
+      - mysql_data_prod:/var/lib/mysql
+    networks:
+      - cesaxis_network
+
+volumes:
+  mysql_data_prod:
+
+networks:
+  cesaxis_network:
+    external: true
