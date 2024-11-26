@@ -1,5 +1,5 @@
 from flask import Flask
-from routes.db_access import db_test_blueprint  # Import the db_test blueprint from db_access.py in the routes folder
+from src.routes.db_access import db_test_blueprint  # Import the db_test blueprint from db_access.py in the routes folder
 
 def create_app():
     app = Flask(__name__)
