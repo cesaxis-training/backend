@@ -15,7 +15,7 @@ services:
     depends_on:
       - db
     networks:
-      - app_network
+      - cesaxis_network
  
   db:
     image: mysql:8.0
@@ -30,11 +30,11 @@ services:
     ports:
       - "3308:3306"  
     networks:
-      - app_network
+      - cesaxis_network
  
 volumes:
   mysql_data:
  
 networks:
-  app_network:
+  cesaxis_network:
     driver: bridge
