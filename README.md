@@ -57,3 +57,22 @@ cd backend
 ```bash
 docker-compose up --build
 ```
+## To use database
+
+```bash
+docker compose exec db mysql -p 
+
+//password="password do root"
+
+```
+
+```sql
+    show database;
+
+    use mydatabase;
+
+    CREATE TABLE quotes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    text VARCHAR(500) NOT NULL,
+    author VARCHAR(100) NOT NULL
+);
