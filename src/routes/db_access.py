@@ -64,3 +64,44 @@ def create_quote():
     except Exception as e:
         models.db.session.rollback()
         return jsonify({'message': 'Erro ao criar citação', 'error': str(e)}), 500
+
+# Rota para atualizar uma citação existente (PUT)
+@db_test_blueprint.route('/quotes/<int:id>', methods=['PUT'])
+def update_quote(id):
+    data = request.get_json()
+
+    # Busca a citação no banco de dados com o ID fornecido
+    quote = models.Quotes.query.get(id)
+    if not quote:
+        return jsonify({'message': 'Citação não encontrada'}), 404
+
+    # Atualiza os campos da citação com os dados fornecidos
+    if 'text' in data:
+        quote.text = data['text']
+    if 'author' in data:
+        quote.author = data['author']
+    
+    try:
+        # Commit das alterações no banco de dados
+        models.db.session.commit()
+        return jsonify({'id': quote.id, 'text': quote.text, 'author': quote.author}), 200
+    except Exception as e:
+        models.db.session.rollback()
+        return jsonify({'message': 'Erro ao atualizar citação', 'error': str(e)}), 500
+
+# Rota para deletar uma citação (DELETE)
+@db_test_blueprint.route('/quotes/<int:id>', methods=['DELETE'])
+def delete_quote(id):
+    # Busca a citação no banco de dados com o ID fornecido
+    quote = models.Quotes.query.get(id)
+    if not quote:
+        return jsonify({'message': 'Citação não encontrada'}), 404
+
+    try:
+        # Deleta a citação do banco de dados
+        models.db.session.delete(quote)
+        models.db.session.commit()
+        return jsonify({'message': f'Citação com id {id} deletada com sucesso'}), 200
+    except Exception as e:
+        models.db.session.rollback()
+        return jsonify({'message': 'Erro ao deletar citação', 'error': str(e)}), 500
