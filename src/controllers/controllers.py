@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from models import db, Quotes
+from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 # Criar um Blueprint para o controller de Citações
 quote_bp = Blueprint('quote_bp', __name__)
@@ -12,14 +13,23 @@ def create_quote():
     if not data or not data.get('text') or not data.get('author'):
         return jsonify({'message': 'Texto e autor são obrigatórios'}), 400
 
+    text = data['text'].strip()
+    author = data['author'].strip()
+
+    if not text or not author:
+        return jsonify({'message': 'Texto e autor não podem ser vazios'}), 400
+
     # Criar uma nova citação
-    new_quote = Quotes(text=data['text'], author=data['author'])
+    new_quote = Quotes(text=text, author=author)
     
     try:
         db.session.add(new_quote)
         db.session.commit()
         return jsonify({'id': new_quote.id, 'text': new_quote.text, 'author': new_quote.author}), 201
-    except Exception as e:
+    except IntegrityError as e:
+        db.session.rollback()
+        return jsonify({'message': 'Erro de integridade ao criar citação', 'error': str(e)}), 400
+    except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({'message': 'Erro ao criar citação', 'error': str(e)}), 500
 
@@ -51,14 +61,17 @@ def update_quote(id):
         return jsonify({'message': 'Citação não encontrada'}), 404
 
     if 'text' in data:
-        quote.text = data['text']
+        quote.text = data['text'].strip()
     if 'author' in data:
-        quote.author = data['author']
+        quote.author = data['author'].strip()
     
     try:
         db.session.commit()
         return jsonify({'id': quote.id, 'text': quote.text, 'author': quote.author})
-    except Exception as e:
+    except IntegrityError as e:
+        db.session.rollback()
+        return jsonify({'message': 'Erro de integridade ao atualizar citação', 'error': str(e)}), 400
+    except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({'message': 'Erro ao atualizar citação', 'error': str(e)}), 500
 
@@ -74,6 +87,6 @@ def delete_quote(id):
         db.session.delete(quote)
         db.session.commit()
         return jsonify({'message': f'Citação com id {id} deletada com sucesso'})
-    except Exception as e:
+    except SQLAlchemyError as e:
         db.session.rollback()
         return jsonify({'message': 'Erro ao deletar citação', 'error': str(e)}), 500

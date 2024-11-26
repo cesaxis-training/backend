@@ -1,6 +1,16 @@
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+import os
 
-db = SQLAlchemy()
+app = Flask(__name__)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = (
+    f"mysql://{os.getenv('MYSQL_USER', 'user')}:{os.getenv('MYSQL_PASSWORD', 'password')}@"
+    f"{os.getenv('MYSQL_HOST', 'db')}/{os.getenv('MYSQL_DATABASE', 'mydatabase')}"
+)
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
 
 class Quote(db.Model):
     __tablename__ = 'quotes'
@@ -11,4 +21,3 @@ class Quote(db.Model):
 
     def __repr__(self):
         return f"<Quote {self.id}: {self.text} - {self.author}>"
-    
