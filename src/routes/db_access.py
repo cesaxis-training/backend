@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 import mysql.connector
 import os
-from models import models
+from src.models import models
 
 # Create the Blueprint object
 db_test_blueprint = Blueprint("db_test", __name__)
