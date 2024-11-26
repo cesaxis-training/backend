@@ -42,7 +42,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H 188.166.118.113 >> ~/.ssh/known_hosts
-       - name: Check out
+      - name: Check out
         uses: actions/checkout@v4
       - name: Create DIR
         run: |
