@@ -1,5 +1,5 @@
 from flask import Flask
-from routes.db_access import db_test_blueprint
+from src.routes.db_access import db_test_blueprint
 from flask_cors import CORS
 import os
 from models import models
