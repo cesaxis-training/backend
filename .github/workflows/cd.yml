@@ -46,5 +46,5 @@ jobs:
         run: |
           ssh root@188.166.118.113 "mkdir -p /srv/backend"
       - name: Copy production docker compose
-        run: |
+        run: | 
           scp docker-compose.prod.yml root@188.166.118.113:/srv/backend/docker-compose.yml
