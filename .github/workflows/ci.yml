@@ -21,7 +21,7 @@ jobs:
 
       - name: Build and run containers
         run: |
-          docker-compose up -d
+          docker compose up -d
           # Optionally, add a wait command here to ensure the container is fully up:
           docker compose exec flask_backend wait-for-it.sh localhost:5000 --timeout=30 -- echo "Flask app is up!" 
 
