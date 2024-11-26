@@ -48,16 +48,16 @@ jobs:
         run: |
           ssh root@167.99.222.241 "mkdir -p /srv/backend"
       - name: Copy production docker compose
-        run: | 
+        run: |
           scp docker-compose.prod.yml root@167.99.222.241:/srv/backend/docker-compose.yml
       - name: Create .env file
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
           GITHUB_SHA: ${{ github.sha }}
-          MYSQL_USER: ${{ secrets.MYSQL_USER }}
-          MYSQL_PASSWORD: cesaxis
-          MYSQL_DATABASE: cesaxis
-          MYSQL_ROOT_PASSWORD: cesaxis
+          MYSQL_USER: cesaxis_user
+          MYSQL_PASSWORD: cesaxis_pass
+          MYSQL_DATABASE: cesaxis_db
+          MYSQL_ROOT_PASSWORD: cesaxis_root_pass
         run: |
           ssh root@167.99.222.241 "cat > /srv/backend/.env << EOL
           GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
@@ -70,6 +70,6 @@ jobs:
 
       - name: Deploy docker-compose
         run: |
-          ssh root@167.99.222.241 "cd /srv/backend && docker compose pull && docker compose up -d" 
-        
+          ssh root@167.99.222.241 "cd /srv/backend && docker compose pull && docker compose up -d"
+
 
