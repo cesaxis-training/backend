@@ -8,13 +8,13 @@ quote_bp = Blueprint('quote_bp', __name__)
 @quote_bp.route('/quotes', methods=['POST'])
 def create_quote():
     data = request.get_json()
-    
+
     if not data or not data.get('text') or not data.get('author'):
         return jsonify({'message': 'Texto e autor são obrigatórios'}), 400
 
     # Criar uma nova citação
     new_quote = Quotes(text=data['text'], author=data['author'])
-    
+
     try:
         db.session.add(new_quote)
         db.session.commit()
@@ -45,7 +45,7 @@ def get_quote(id):
 @quote_bp.route('/quotes/<int:id>', methods=['PUT'])
 def update_quote(id):
     data = request.get_json()
-    
+
     quote = Quotes.query.get(id)
     if not quote:
         return jsonify({'message': 'Citação não encontrada'}), 404
@@ -54,7 +54,7 @@ def update_quote(id):
         quote.text = data['text']
     if 'author' in data:
         quote.author = data['author']
-    
+
     try:
         db.session.commit()
         return jsonify({'id': quote.id, 'text': quote.text, 'author': quote.author})
