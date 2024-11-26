@@ -1,39 +1,39 @@
-version: "3.8"
- 
 services:
   backend:
     build: .
-    container_name: flask_backend
+    container_name: cesaxis_backend
     ports:
       - "5001:5000"
     environment:
       - FLASK_ENV=development
-      - MYSQL_HOST=db
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
-      - MYSQL_DATABASE=mydatabase
+      - FLASK_DEBUG=1
+      - MYSQL_HOST=${MYSQL_HOST}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    volumes:
+      - ./:/app
     depends_on:
       - db
     networks:
       - cesaxis_network
- 
+
   db:
     image: mysql:8.0
+    container_name: cesaxis_db
     environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword
-      - MYSQL_USER=user
-      - MYSQL_PASSWORD=password
-      - MYSQL_DATABASE=mydatabase
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
     volumes:
       - mysql_data:/var/lib/mysql
-    ports:
-      - "3308:3306"  
     networks:
       - cesaxis_network
- 
+
 volumes:
   mysql_data:
- 
+
 networks:
   cesaxis_network:
     driver: bridge
