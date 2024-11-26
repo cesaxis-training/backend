@@ -50,3 +50,22 @@ jobs:
       - name: Copy production docker compose
         run: | 
           scp docker-compose.prod.yml root@188.166.118.113:/srv/backend/docker-compose.yml
+      - name: Create .env file
+        env:
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_SHA: ${{ github.sha }}
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: cesaxis
+          MYSQL_DATABASE: cesaxis
+          MYSQL_ROOT_PASSWORD: cesaxis
+        run: |
+          ssh root@188.166.118.113 "cat > /srv/backend2/.env << EOL
+          GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
+          GITHUB_SHA=${GITHUB_SHA}
+          MYSQL_USER=${MYSQL_USER}
+          MYSQL_PASSWORD=${MYSQL_PASSWORD}
+          MYSQL_DATABASE=${MYSQL_DATABASE}
+          MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+          EOL"
+        
+
